@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download File</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6e7cfc, #00bcd4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      animation: fadeIn 0.5s ease-in-out;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    }
+
+    .modal-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #00bcd4;
+      text-shadow: 0 0 15px #00bcd4, 0 0 30px #00bcd4, 0 0 45px #009688;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border: 2px solid #00bcd4;
+      border-radius: 5px;
+      outline: none;
+      background: #1e1e1e;
+      color: #fff;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .modal-content input:focus {
+      border-color: #009688;
+      background: #333;
+    }
+
+    .modal-content button {
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, transform 0.3s;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    }
+
+    .modal-content button:hover {
+      background-color: #009688;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 1);
+    }
+
+    .container {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #00bcd4;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-shadow: 0 0 15px #00bcd4, 0 0 30px #00bcd4, 0 0 45px #009688;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #bbb;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 15px;
+      margin: 15px 0;
+      border: 2px solid #00bcd4;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      background: #333;
+      color: #fff;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #009688;
+      background: #444;
+    }
+
+    button {
+      background-color: #009688;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      width: 100%;
+      transition: transform 0.2s, background-color 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    }
+
+    button:hover {
+      background-color: #00796b;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      opacity: 0;
+      animation: fadeInError 1s forwards;
+    }
+
+    .download-link {
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeInLink 1s forwards;
+    }
+
+    .download-link a {
+      color: #00bcd4;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-shadow: 0 0 15px #00bcd4, 0 0 30px #009688;
+      transition: color 0.3s ease;
+    }
+
+    .download-link a:hover {
+      color: #00796b;
+      text-shadow: 0 0 20px #00bcd4, 0 0 40px #00bcd4;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInError {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInLink {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal" id="confirmationModal">
+    <div class="modal-content">
+      <h2>Konfirmasi</h2>
+      <p>Masukkan kode konfirmasi untuk melanjutkan:</p>
+      <input type="text" id="confirmationCode" placeholder="Masukkan kode konfirmasi" />
+      <button id="confirmButton">Konfirmasi</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="mainContent">
+    <h1>Download File</h1>
+    <p>Masukkan kode biner untuk mendapatkan akses ke file unduhan.</p>
+    <input type="text" id="binaryCodeInput" placeholder="Masukkan kode biner" />
+    <button id="submitButton">Submit</button>
+    <p class="error hidden" id="errorMessage">Kode biner salah. Silakan coba lagi!</p>
+    <div class="download-link hidden" id="downloadLink">
+      <p>Kode biner benar! Klik tombol di bawah untuk mendownload file:</p>
+      <a href="https://drive.google.com/uc?id=1YRwRaZOXjRqL3dWXQeGeavad0oVFfbeN" target="_blank">Download File</a>
+    </div>
+  </div>
+
+  <script>
+    const correctConfirmationCode = "qfwltqlw";
+    const correctBinary = "01001101 01100001 01100100 01100101 00100000 01100010 01111001 00100000 01010011 01100001 01101011 01100001 00101100 00100000 01000001 01101100 01101100 00100000 01110010 01101001 01100111 01101000 01110100 00100000 01110010 01100101 01110011 01100101 01110010 01110110 01100101 01100100 00101110 00100000 01100110 01110010 01100101 01100101 00100000 01101111 01100110 00100000 01100011 01101000 01100001 01110010 01100111 01100101 00101100 00100000 01010010 01101001 01110011 01101101 01100001 01100010 01100001 00100000 00100110 00100000 01010010 01101001 01110011 01101101 01100001 01100010 01100001 00100000 01001101 01100101 01100101 01100100 01101001 01100001";
+
+    const modal = document.getElementById("confirmationModal");
+    const mainContent = document.getElementById("mainContent");
+    const confirmButton = document.getElementById("confirmButton");
+    const confirmationCodeInput = document.getElementById("confirmationCode");
+    const submitButton = document.getElementById("submitButton");
+    const binaryCodeInput = document.getElementById("binaryCodeInput");
+    const errorMessage = document.getElementById("errorMessage");
+    const downloadLink = document.getElementById("downloadLink");
+
+    confirmButton.addEventListener("click", function() {
+      if (confirmationCodeInput.value === correctConfirmationCode) {
+        modal.style.display = "none";
+        mainContent.classList.remove("hidden");
+      } else {
+        alert("Kode konfirmasi salah!");
+      }
+    });
+
+    submitButton.addEventListener("click", function() {
+      if (binaryCodeInput.value === correctBinary) {
+        downloadLink.classList.remove("hidden");
+        errorMessage.classList.add("hidden");
+      } else {
+        errorMessage.classList.remove("hidden");
+        downloadLink.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
